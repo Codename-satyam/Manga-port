@@ -250,9 +250,9 @@ Asset paths such as `/img/cover.webp` also need the base path in that case.
 
 **Satyam Anand**
 
-- GitHub: <!-- https://github.com/your-username -->
-- LinkedIn: <!-- https://linkedin.com/in/your-profile -->
-- Email: <!-- your-email -->
+- GitHub: https://github.com/your-username/Codename-Satyam 
+- LinkedIn: https://linkedin.com/in/satyam-anand33
+- Email: satyamanand643@gmail.com
 
 ## License
 
