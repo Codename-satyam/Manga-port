@@ -1,0 +1,311 @@
+:root{--ink:#080808;--char:#151515;--paper:#F2EFE8;--aged:#DCD6C9;--red:#B51F2B;--grey:#858585;--d:'Anton','Impact','Arial Narrow',sans-serif;--b:'Shippori Mincho B1','Hiragino Mincho ProN',Georgia,serif;--m:'JetBrains Mono',ui-monospace,monospace;--flip:1100ms;color-scheme:dark;box-sizing:border-box}
+*,*::before,*::after{box-sizing:inherit}
+html,body,#root{height:100%}
+body{margin:0;background:var(--ink);color:var(--ink);font:500 .95rem/1.5 var(--b);overflow-x:hidden;padding:env(safe-area-inset-top,0) 0 0}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(#fff1 1px,transparent 1.5px) 0 0/9px 9px;pointer-events:none}
+h1,h2,h3{font-family:var(--d);font-weight:400;line-height:.95;margin:0;text-transform:uppercase;letter-spacing:.01em}
+h2{font-size:clamp(1.7rem,4.6vh + 1rem,3.2rem)}h3{font-size:clamp(1.15rem,2.4vh + .5rem,1.7rem)}
+p{margin:.4rem 0}
+.pn p:not(.m){border-left:3px solid var(--red);padding-left:.55rem;line-height:1.45}
+.d h2,.d h3{text-shadow:2px 2px 0 var(--red)}.l h2,.l h3{text-shadow:2px 2px 0 #b51f2b55}
+button,a{color:inherit}button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.m{font:.68rem var(--m);letter-spacing:.08em;opacity:.7}.m.full{opacity:1}.red{color:var(--red);opacity:1}
+.skip,.sr{position:absolute;left:-999px}.skip:focus{left:0;z-index:300;background:var(--paper);padding:.5rem}
+/* chrome */
+#top{position:fixed;left:0;right:0;top:0;z-index:50;display:flex;justify-content:space-between;padding:calc(.5rem + env(safe-area-inset-top,0px)) 1rem .5rem;color:var(--paper);font:.7rem var(--m)}
+.signature{position:fixed;right:1rem;top:3.1rem;z-index:50;color:var(--paper);font:400 1rem var(--d);letter-spacing:.08em;transform:rotate(-7deg);opacity:.85}
+.signature span,.sig-mark span{color:var(--red);font:.55em var(--m);margin-left:.25em}
+#prog{position:fixed;left:0;top:0;height:3px;background:var(--red);z-index:60;transition:width .6s}
+#bar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;justify-content:center;gap:.5rem;padding:.6rem .8rem calc(.6rem + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,#080808ee 40%)}
+#bar button{background:var(--ink);color:var(--paper);border:2px solid var(--paper);padding:.5rem .9rem;font:.78rem var(--m);min-height:2.6rem}
+#bar button:disabled{opacity:.3;cursor:default}#bar #nx{background:var(--red);border-color:var(--red)}
+#mn{position:fixed;left:50%;bottom:4.2rem;transform:translateX(-50%);z-index:70;background:var(--ink);border:2px solid var(--paper);color:var(--paper);list-style:none;margin:0;padding:0;min-width:min(20rem,92vw);max-height:60vh;overflow:auto;font:.78rem var(--m)}
+#mn button{display:block;width:100%;text-align:left;background:none;border:0;padding:.6rem .9rem;color:inherit}
+#mn button:hover,#mn [aria-current]{background:var(--paper);color:var(--ink)}
+/* book */
+.bk{--ow:min(calc(100vw - 12px),calc((100svh - 100px)*1.78),1400px);position:relative;width:var(--ow);height:calc(100svh - 100px);margin:32px auto 0}
+.bk.cover-book{width:calc(var(--ow)/2)}
+/* the spread has no filter / preserve-3d: a filter flattens 3D and is costly to repaint, so the open book gets a static shadow below */
+.spread{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;gap:0}
+.cover-book .spread{display:block;animation:none}
+.blank-page{background:var(--paper);background-image:radial-gradient(#0002 1px,transparent 1.4px);background-size:8px 8px;box-shadow:0 0 0 1px #000}
+.blank-page.final-reverse{position:relative;overflow:hidden;padding:0}
+.blank-page.final-reverse>img.fill{position:absolute;inset:0;width:100%;height:100%;padding:1rem;object-fit:contain;object-position:center}
+.open-book::before{content:"";position:absolute;inset:0;box-shadow:6px 8px 30px #000a;pointer-events:none}
+.open-book .spread::after{content:"";position:absolute;z-index:4;left:50%;top:0;bottom:0;width:18px;transform:translateX(-50%);background:linear-gradient(90deg,#0005,transparent 35%,transparent 65%,#0005);pointer-events:none}
+.pg{position:absolute;inset:0;background:var(--paper);padding:16px 16px 24px;overflow:auto;transform-origin:left center;box-shadow:0 0 0 1px #000,6px 8px 30px #000a;transition:transform .9s cubic-bezier(.6,0,.3,1),opacity .9s ease-in,visibility 0s;background-image:radial-gradient(#0002 1px,transparent 1.4px);background-size:8px 8px}
+.spread .pg{position:relative;inset:auto;width:auto;height:100%;box-shadow:0 0 0 1px #000}
+.spread .right-page{transform-origin:right center}
+.cover-book .pg{position:absolute;inset:0}
+.pg::before{content:"";position:absolute;left:0;top:0;bottom:0;width:14px;background:linear-gradient(90deg,#0004,transparent);pointer-events:none}
+.gr{display:grid;gap:12px;height:calc(100% - 1.4rem);min-height:0}
+.pn{position:relative;border:3px solid var(--ink);padding:.8rem .9rem;overflow:hidden;min-height:0;display:flex;flex-direction:column;justify-content:center;box-shadow:6px 6px 0 rgba(8,8,8,.9);transform:rotate(var(--r,0deg));transition:transform .25s,box-shadow .25s;clip-path:inset(0 100% 0 0)}
+.pn:hover{transform:translate(-3px,-3px) rotate(0deg);box-shadow:10px 10px 0 var(--red);z-index:2}
+.pn.d{background:var(--ink);color:var(--paper)}.pn.l{background:var(--paper)}
+.tn{background-image:radial-gradient(#fff2 1.2px,transparent 1.5px);background-size:6px 6px}.l.tn{background-image:radial-gradient(#0003 1.2px,transparent 1.5px)}
+.pn svg.fill{position:absolute;inset:0;width:100%;height:100%}
+.pn>*{position:relative}.pn>svg.fill{position:absolute}
+.pf{position:absolute;left:0;right:0;bottom:2px;text-align:center;font:.65rem var(--m);color:#555}
+.sfx{position:absolute;font:400 2.4rem var(--d);color:transparent;-webkit-text-stroke:1.5px currentColor;opacity:.5;pointer-events:none;transform:rotate(-8deg)}
+/* panel-by-panel pop reveal */
+.pg.seen .pn{animation:pop .85s cubic-bezier(.2,1.3,.35,1) calc(var(--i,0)*.22s + .5s) both}
+.pg.seen.done .pn{animation:none;clip-path:inset(-14px)}
+@keyframes pop{0%{clip-path:inset(0 100% 0 0);transform:translateY(26px) scale(.88) rotate(calc(var(--r,0deg)*-6));box-shadow:0 0 0 rgba(8,8,8,0)}55%{clip-path:inset(-14px);transform:translateY(-6px) scale(1.04) rotate(var(--r,0deg));box-shadow:12px 12px 0 var(--red)}100%{clip-path:inset(-14px);transform:rotate(var(--r,0deg));box-shadow:6px 6px 0 rgba(8,8,8,.9)}}
+/* content */
+.btn{display:inline-block;border:2px solid currentColor;background:transparent;padding:.5rem .9rem;font:400 1rem var(--d);letter-spacing:.07em;text-decoration:none;text-transform:uppercase}
+.btn.p{background:var(--red);border-color:var(--red);color:var(--paper)}.btn:hover{background:var(--paper);color:var(--ink)}
+.row{display:flex;gap:.5rem;flex-wrap:wrap}.p.row{border:0;padding:0}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0 0;padding:0;list-style:none}
+.chips li{border:2px solid currentColor;padding:.2rem .6rem;font:.78rem var(--m);transform:rotate(-1.2deg)}.chips li:nth-child(even){transform:rotate(1.2deg)}
+.stk{display:flex;flex-wrap:wrap;gap:.3rem}.stk span{font:.68rem var(--m);border:1px solid currentColor;padding:.1rem .4rem}
+.hd{padding:.5rem .8rem}.hd h2{font-size:clamp(1.4rem,3vh + .8rem,2.4rem)}
+.cover h1{position:absolute;left:.8rem;bottom:.5rem;font-size:clamp(3rem,11vh,6rem);text-shadow:3px 3px 0 #080808}
+.secret-hint{margin-top:.7rem;opacity:.5}
+.vt{position:absolute;right:.6rem;top:.6rem;writing-mode:vertical-rl}
+.tag-line{font:400 1.05rem var(--d);letter-spacing:.04em;margin:.2rem 0}
+.thread{font:400 .78rem/1.45 var(--m);letter-spacing:.02em;color:var(--red);max-width:38rem;margin:.7rem 0}.thread span{font-size:1.2em}.thread-dark{color:var(--aged)}
+.corner{position:absolute;left:.7rem;top:.5rem}.ov{position:absolute;left:.7rem;bottom:.6rem;max-width:70%}
+.det{padding-left:1rem;margin:.3rem 0;font-size:.78rem}.attr{font-size:.78rem}.attr h3{font-size:1.1rem}
+.character-card{justify-content:flex-end;gap:.15rem;padding:.6rem .7rem}.character-card h3{font-size:clamp(1.3rem,3vh + .4rem,1.9rem)}.character-card .m,.character-card h3,.character-level{text-shadow:0 0 6px #000,1px 1px 0 #000}.character-level{font:400 1.05rem var(--d);color:var(--red);letter-spacing:.06em}.character-role{font-size:.64rem;line-height:1.3}.character-card .btn{align-self:flex-start;margin-top:.35rem;padding:.25rem .7rem;font-size:.85rem}
+.mid{text-align:center}.numeral{font:400 2.4rem var(--d)}
+.cell{padding:.4rem .5rem;font-size:.74rem}.cell h3{font-size:1rem}.focus{padding:.4rem .8rem;font-size:.8rem}
+.land{padding:0}.ask{font-size:1.1rem}.end{padding:.4rem .8rem}.end .btn{padding:.1rem .5rem;font-size:.85rem;margin-left:.6rem}
+.lk{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.6rem}
+.ptl{flex-direction:row;gap:.8rem;align-items:center;text-align:left}
+.ptl .a{flex:0 0 40%;align-self:stretch;position:relative;margin:-.8rem 0 -.8rem -.9rem;border-right:3px solid var(--ink)}.ptl .a svg,.ptl .a img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.ptl .a img{filter:saturate(.9) contrast(1.05)}
+.ptl .tx{flex:1}.ptl .btn{padding:.25rem .6rem;font-size:.85rem;margin-top:.3rem}
+pre{margin:0;font:.7rem/1.5 var(--m);overflow:auto;color:var(--aged);white-space:pre}
+.tabs{display:flex;gap:.4rem;margin-bottom:.4rem}.tabs button{background:none;border:2px solid var(--paper);color:var(--paper);padding:.2rem .6rem;font:.72rem var(--m)}.tabs [aria-selected=true]{background:var(--paper);color:var(--ink)}
+#out{height:100%;min-height:4rem;overflow:auto;white-space:pre-wrap;font:.72rem/1.5 var(--m);color:var(--aged)}
+#tin{display:flex;gap:.4rem;margin-top:.3rem;font:.8rem var(--m)}#tin input{flex:1;min-width:0;background:transparent;border:0;border-bottom:1px solid var(--grey);color:var(--paper);font:inherit}
+form{display:grid;gap:.4rem;margin-top:.5rem}form input,form textarea{width:100%;padding:.4rem;background:transparent;border:2px solid var(--ink);font:inherit;color:inherit}
+dialog{border:3px solid var(--paper);background:var(--ink);color:var(--paper);max-width:min(640px,94vw);padding:0;box-shadow:8px 8px 0 var(--red)}dialog::backdrop{background:#000d}
+.dg{padding:1.4rem}.dg dt{font:.7rem var(--m);color:var(--red);margin-top:.8rem}.dg dd{margin:.2rem 0}
+.secret{position:fixed;inset:0;z-index:600;display:grid;place-items:center;padding:1rem;background:#080808e8}
+.secret-card{max-width:34rem;border:3px solid var(--paper);padding:2rem;background:var(--paper);color:var(--ink);box-shadow:10px 10px 0 var(--red);transform:rotate(-1deg);animation:secret-in .45s cubic-bezier(.2,1.3,.35,1) both}
+.secret-card h2{margin:.8rem 0;font-size:clamp(2rem,6vw,3.4rem)}
+.secret-card p:not(.m){max-width:30rem}
+.sig-mark{font:400 clamp(2.2rem,7vw,4rem)/.9 var(--d);letter-spacing:.04em;transform:rotate(-6deg);display:inline-block;margin-bottom:1rem}
+@keyframes secret-in{from{opacity:0;transform:translateY(24px) rotate(-5deg) scale(.92)}to{opacity:1;transform:rotate(-1deg) scale(1)}}
+@media(max-width:640px){.bk,.bk.cover-book{width:calc(100vw - .6rem)}.open-book .spread{display:block}.open-book .spread::after{display:none}.open-book .right-page,.blank-page{display:none}.gr{height:auto;min-height:calc(100% - 1.4rem)}.pn{overflow:visible;min-height:6rem}.pn:has(>svg.fill){min-height:15rem;overflow:hidden}.cover{min-height:58svh}.ptl{flex-direction:column;align-items:stretch}.ptl .a{flex:0 0 5rem;margin:-.8rem -.9rem 0;border-right:0;border-bottom:3px solid var(--ink)}.character-card .dos{grid-template-columns:1fr}#bar .lb{display:none}}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;transition-delay:0s!important;animation:none!important}.pn{clip-path:none}}
+/* background video behind the book */
+main{position:relative;z-index:1}
+/* opening sequence */
+#intro{position:fixed;inset:0;z-index:400;background:var(--ink);color:var(--paper);display:grid;place-items:center;transition:opacity .7s}
+#intro.out{opacity:0;pointer-events:none}
+.opening-line{font:400 .82rem var(--m);letter-spacing:.08em;color:var(--aged);margin-top:.7rem}
+.sig-mark{font:400 clamp(2.2rem,7vw,4rem)/.9 var(--d);letter-spacing:.04em;transform:rotate(-6deg);display:inline-block;margin-bottom:1rem}
+.sig-mark span{color:var(--red);font:.55em var(--m);margin-left:.25em}
+.ld .sig-mark{animation:signature-in .8s cubic-bezier(.2,1.3,.35,1) both}
+.ld h2{animation:ink-in .7s ease-out .25s both}
+.ldbar{position:relative}
+.ldbar::before{content:"";position:absolute;left:0;top:-9px;width:42%;height:2px;background:var(--red);transform:rotate(-2deg);transform-origin:left;animation:brush-in .8s ease-out .35s both}
+@keyframes signature-in{from{opacity:0;transform:translateX(-22px) rotate(-12deg) scale(.8)}to{opacity:1;transform:rotate(-6deg) scale(1)}}
+@keyframes ink-in{from{opacity:0;clip-path:inset(0 100% 0 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
+@keyframes brush-in{from{transform:scaleX(0) rotate(-2deg)}to{transform:scaleX(1) rotate(-2deg)}}
+.ld{text-align:center;width:min(80vw,420px)}.ld h2{font-size:clamp(1.5rem,6vw,2.6rem);margin:.3rem 0}
+.ldbar{height:6px;background:#2a2a2a;margin:1.2rem 0 .5rem;overflow:hidden}.ldbar i{display:block;height:100%;background:var(--paper);border-right:4px solid var(--red);transition:width .35s}
+.ic{position:absolute;right:max(1rem,env(safe-area-inset-right));bottom:calc(1rem + env(safe-area-inset-bottom,0px));display:flex;gap:.5rem}
+.ic button{background:var(--ink);color:var(--paper);border:2px solid var(--paper);padding:.5rem .9rem;font:.78rem var(--m);min-height:2.6rem}
+.ic button:hover{background:var(--paper);color:var(--ink)}
+.bgv{position:fixed;inset:0;z-index:0;pointer-events:none;background:var(--ink);transition:opacity .6s}
+.bgv[data-on=false]{opacity:0}
+.bgv video{width:100%;height:100%;object-fit:cover;opacity:var(--dim,.55);filter:grayscale(var(--gs,1)) contrast(1.1)}
+.bgv::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 35%,#080808e6 100%)}
+
+/* intro video (plays after the loader, before the manga opens) */
+#cine{position:fixed;inset:0;z-index:350;background:#000;opacity:0;visibility:hidden}
+#cine.play,#cine.out{visibility:visible}#cine.play{opacity:1}
+#cine.out{opacity:0;pointer-events:none;transition:opacity .8s}
+#cine video{position:absolute;inset:0;width:100%;height:100%;background:#000}
+/* samurai + katana illustrations */
+.pn>svg.kt{position:absolute;width:100%;height:auto;pointer-events:none}
+.pn>svg.wm{width:78%;right:-6%;bottom:.3rem;opacity:.28;transform:rotate(-7deg)}
+.pn>svg.hdr{width:56%;right:-4%;bottom:-.2rem}
+.pn>svg.slash{width:140%;left:-22%;top:34%;transform:rotate(-24deg);filter:drop-shadow(3px 4px 0 #080808)}
+.pn>svg.full{position:relative;width:100%;transform:rotate(-4deg);margin-bottom:.4rem}
+.splash svg.fill{transform-origin:70% 60%}
+.pg.seen .splash svg.fill{animation:lunge 1.1s cubic-bezier(.2,1,.3,1) 1s both}
+@keyframes lunge{from{transform:translateX(-5%) scale(1.08)}to{transform:none}}
+.sfx.big{font-size:clamp(5rem,24vh,9rem);opacity:.4}
+.splash .ov{text-shadow:3px 3px 0 var(--red);z-index:1}
+.blade{align-items:stretch}
+
+/* pictures */
+.pn>img.fill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;user-select:none}
+.pn>i.shade{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,#000c);pointer-events:none}
+.pn>.cap{position:absolute;left:.8rem;bottom:.55rem;color:var(--paper);text-shadow:2px 2px 0 #000}
+.pn>.corner{text-shadow:0 0 6px #000}
+.pg.seen .splash img.fill{animation:lunge 1.1s cubic-bezier(.2,1,.3,1) 1s both}
+@media(max-width:640px){.pn:has(>img.fill){min-height:15rem;overflow:hidden}.cover{min-height:58svh}}
+
+/* case study dialog */
+dialog{max-width:min(860px,94vw);max-height:90svh}
+.cs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:.9rem}.cp.wide{grid-column:1/3}
+.cp{border:2px solid var(--paper);padding:.7rem .8rem;animation:cpin .5s ease-out calc(var(--k,0)*.12s) both}
+@keyframes cpin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.cp h4{font:.9rem var(--m);letter-spacing:.08em;margin-bottom:.4rem}.cp h4 span{color:var(--red);margin-right:.4rem}
+.dg ul{margin:.2rem 0 0 1.1rem}.dg .stk{display:flex;flex-wrap:wrap;gap:.3rem}
+.shots{display:flex;gap:8px;overflow-x:auto;margin-bottom:.5rem}.shots img{height:9rem;width:auto;max-width:none;border:2px solid var(--paper)}
+.dg .row .btn[aria-pressed=true]{background:var(--paper);color:var(--ink)}.dg pre{white-space:pre-wrap;font:.72rem/1.5 var(--m);overflow:auto}
+@media(max-width:640px){.cs{grid-template-columns:1fr}.cp.wide{grid-column:auto}}
+/* The cover is a single jacket */
+.cover-book .spread{display:block;animation:none;filter:drop-shadow(18px 22px 26px #000b)}
+.cover-book .right-page{display:none}
+.cover-book .pg{border:1px solid #ffffff35;box-shadow:0 0 0 1px #000,12px 14px 32px #000b}
+.cover-book .cover{isolation:isolate;border:4px solid var(--paper);box-shadow:inset 0 0 0 1px #ffffff70,8px 10px 0 #080808;overflow:hidden}
+.cover-book .cover::after{content:"";position:absolute;inset:.55rem;border:1px solid #f2efe866;pointer-events:none;z-index:1}
+.cover-book .cover h1{font-size:clamp(3.3rem,12vh,7.2rem);line-height:.78;letter-spacing:.015em;text-shadow:4px 4px 0 var(--red),8px 9px 0 #080808;animation:cover-title-in .9s cubic-bezier(.2,.8,.2,1) .25s both}
+.cover-book .cover .vt{top:.8rem;right:.9rem;letter-spacing:.16em}
+.cover-book .cover .sfx{font-size:clamp(3rem,10vh,6rem);opacity:.32;animation:cover-ink-in 1.2s ease-out .1s both}
+.cover-book .gr{gap:10px}
+.cover-book .gr>.pn:nth-child(2){position:relative;isolation:isolate;box-shadow:6px 6px 0 #080808;background-image:linear-gradient(115deg,#fff2,transparent 38%)}
+.cover-book .gr>.pn:nth-child(2)::before{content:"VOL. 01  /  THE FIRST COMMIT";display:block;color:var(--red);font:.65rem var(--m);letter-spacing:.13em;margin-bottom:.25rem}
+.cover-book .gr>.pn:nth-child(2) .thread{font-size:.88rem}
+.cover-book .gr>.pn:nth-child(2) .row .btn:first-child{box-shadow:4px 4px 0 var(--ink);transition:transform .2s,box-shadow .2s}
+.cover-book .gr>.pn:nth-child(2) .row .btn:first-child:hover{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+@keyframes cover-title-in{from{opacity:0;transform:translateY(22px) skewY(3deg)}to{opacity:1;transform:none}}
+@keyframes cover-ink-in{from{opacity:0;transform:translateX(-18px) scale(.8)}to{opacity:.32;transform:none}}
+/* character file */
+.dos{display:grid;gap:.35rem;font-size:.72rem}.dos dt{font:.6rem var(--m);color:var(--red)}.dos dd{margin:0;line-height:1.25}
+/* recruiter view */
+#rv{position:fixed;inset:0;z-index:500;background:var(--paper);color:var(--ink);overflow:auto}
+.rvi{max-width:860px;margin:0 auto;padding:1rem 1rem 3rem;font-size:15px}.rvb{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;border-bottom:3px solid var(--ink);padding-bottom:.6rem}
+.rvi h1{font-size:clamp(2.4rem,9vw,4.5rem);margin:.8rem 0 .2rem;outline:0}.rvs{font:.8rem var(--m);margin-bottom:.6rem}
+.rv-thread{font:400 clamp(1.1rem,2.4vw,1.5rem)/1.2 var(--d);color:var(--red);margin:.2rem 0 .7rem;max-width:28rem}
+.rvi section{border:3px solid var(--ink);padding:.8rem 1rem;margin-top:1rem;box-shadow:6px 6px 0 var(--ink)}.rvi h2{font-size:1.3rem;margin-bottom:.5rem}
+.rvl{list-style:none;padding:0;display:grid;gap:.35rem}.rvl b{font:700 .78rem var(--m);color:var(--red);margin-right:.4rem}
+.rvg{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.rvg li{border:2px solid var(--ink);padding:.6rem}.rvi .row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}
+/* haiku page */
+.hk{display:flex;flex-direction:column;gap:.6rem;height:100%;min-height:0}
+.hkc{display:flex;flex-wrap:wrap;gap:.4rem;list-style:none;padding:0}
+.hkc button{border:2px solid var(--ink);background:var(--paper);color:var(--ink);font:.72rem var(--m);padding:.3rem .65rem;min-height:2.2rem}
+.hkc button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.scr{position:relative;flex:1;min-height:7rem;border:2px dashed var(--ink);padding:.8rem;display:flex;align-items:center;overflow:hidden;background:#0000000d}
+.hkt{white-space:pre-line;font:700 clamp(1rem,2.4vh,1.4rem)/1.7 'Shippori Mincho B1',serif;position:relative;z-index:1}
+.kj{position:absolute;right:.4rem;top:-.3rem;font-size:5.5rem;color:var(--red);opacity:.22;pointer-events:none}
+.caret{display:inline-block;width:.1em;height:1em;background:var(--red);margin-left:.1em;vertical-align:-.12em;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.dg .hero{display:block;width:100%;height:9rem;border:2px solid var(--paper);margin:.4rem 0 .6rem}.dg img.project-hero{object-fit:cover}
+
+/* ===================== PAGE FLIP =====================
+   One leaf turns about the spine; the page it reveals sits still underneath. Keep --flip equal to FLIP_MS in App.jsx.
+   The cover is exactly half an open book wide, so it turns into the right-hand page (and back) like any other leaf. */
+:root{--flip:1100ms;--turn-ease:cubic-bezier(.5,.05,.35,1)}
+.book-pages{position:absolute;inset:0;perspective:2600px;perspective-origin:50% 50%}
+.book-pages.is-turning{pointer-events:none}
+.book-pages>.spread{z-index:2}
+.book-pages>.turn-target{z-index:1}
+
+/* the half the leaf lifts from must not show the old page, otherwise the new page never appears */
+.is-turning.dir-next>.spread:not(.turn-target) .right-page,
+.is-turning.dir-previous>.spread:not(.turn-target) .left-page{visibility:hidden}
+.opening .turn-target .left-page{visibility:hidden}       /* cover -> book: nothing on the left until the leaf lands */
+.cover-turn .spread::after{display:none}                   /* no spine while the book is closed */
+.open-book::before{transition:opacity .35s}
+.cover-turn::before{opacity:0}
+
+.turn-leaf{position:absolute;top:0;bottom:0;width:50%;z-index:6;transform-style:preserve-3d;will-change:transform}
+.turn-leaf.next{left:50%;transform-origin:left center;animation:leaf-next var(--flip) var(--turn-ease) both,leaf-lift var(--flip) ease-in-out both}
+.turn-leaf.previous{left:0;transform-origin:right center;animation:leaf-prev var(--flip) var(--turn-ease) both,leaf-lift var(--flip) ease-in-out both}
+@keyframes leaf-next{from{transform:rotateY(0)}to{transform:rotateY(-180deg)}}
+@keyframes leaf-prev{from{transform:rotateY(0)}to{transform:rotateY(180deg)}}
+@keyframes leaf-lift{0%,100%{translate:0 0 0}50%{translate:0 0 60px}}   /* the page lifts off the book mid-turn */
+
+.turn-face{position:absolute;inset:0;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.turn-face.back{transform:rotateY(180deg)}
+.turn-face .pg{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;box-shadow:0 0 0 1px #000}
+.turn-face .pn,.turn-target .pn{animation:none!important;clip-path:inset(-14px);transform:rotate(var(--r,0deg));box-shadow:6px 6px 0 rgba(8,8,8,.9)}
+.turn-face .cover h1,.turn-face .cover .sfx{animation:none}   /* the cover's own entrance must not replay on the leaf */
+
+/* lighting: the front dims as it turns away, the back brightens as it lands */
+.turn-face::after{content:"";position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;z-index:9}
+.turn-face.front::after{animation:face-dim var(--flip) ease-in both}
+.turn-face.back::after{animation:face-lit var(--flip) ease-out both}
+@keyframes face-dim{0%{opacity:0}50%,100%{opacity:.55}}
+@keyframes face-lit{0%,50%{opacity:.55}100%{opacity:0}}
+
+/* shadow cast by the leaf onto the page being revealed */
+.turn-cast{position:absolute;top:0;bottom:0;width:50%;z-index:5;opacity:0;pointer-events:none}
+.turn-cast.next{left:50%;background:linear-gradient(90deg,#000b,#0000 70%);animation:cast var(--flip) ease-in-out both}
+.turn-cast.previous{left:0;background:linear-gradient(270deg,#000b,#0000 70%);animation:cast var(--flip) ease-in-out both}
+.closing .turn-cast{display:none}                          /* nothing is revealed when the book closes */
+@keyframes cast{0%{opacity:0}45%{opacity:.9}100%{opacity:0}}
+.ink-wash{position:absolute;inset:-8%;z-index:7;pointer-events:none;background:radial-gradient(ellipse at center,#080808 0 8%,transparent 48%),linear-gradient(105deg,transparent 38%,#b51f2b66 49%,transparent 60%);opacity:0;transform:scale(.94);animation:ink-wash var(--flip) cubic-bezier(.4,0,.2,1) both}
+@keyframes ink-wash{0%,100%{opacity:0;transform:scale(.94)}42%{opacity:.22;transform:scale(1.02)}58%{opacity:.08;transform:scale(1)}}
+
+/* the book slides to stay centred while the cover opens or closes */
+.opening .book-pages{animation:recenter-open var(--flip) var(--turn-ease) both}
+.closing .book-pages{animation:recenter-close var(--flip) var(--turn-ease) both}
+@keyframes recenter-open{from{translate:-25% 0}to{translate:0 0}}
+@keyframes recenter-close{from{translate:0 0}to{translate:-25% 0}}
+
+/* mobile shows one page at a time: slide instead of turning */
+@media(max-width:640px){
+  .spread.next{animation:slide-next .38s cubic-bezier(.2,.8,.2,1) both}
+  .spread.previous{animation:slide-prev .38s cubic-bezier(.2,.8,.2,1) both}
+}
+@keyframes slide-next{from{opacity:0;transform:translateX(6%)}to{opacity:1;transform:none}}
+@keyframes slide-prev{from{opacity:0;transform:translateX(-6%)}to{opacity:1;transform:none}}
+
+/* fit pass: panels that clipped their text on 768-1080px tall screens */
+.ov{max-width:88%}
+.ptl h3{font-size:clamp(1.05rem,2vh + .4rem,1.5rem)}.ptl p{margin:.25rem 0}.ptl .btn{margin-top:.2rem}
+.cover-book .gr>.pn:nth-child(2) .thread{margin:.35rem 0}.secret-hint{margin-top:.3rem}
+.pn:has(>.kt.hdr) h2{font-size:clamp(1.4rem,3.4vh + .7rem,2.5rem)}
+
+/* ===================== CHARACTER PROFILE SPREAD (manga guidebook style) ===================== */
+dialog.cc{background:transparent;border:0;box-shadow:none;padding:0;max-width:none;max-height:none;overflow:visible;color:var(--ink)}
+dialog.cc::backdrop{background:radial-gradient(#fff1 1px,transparent 1.5px) 0 0/9px 9px,#080808ee}
+.cg-wrap{display:grid;justify-items:center;gap:.9rem;padding:.8rem;max-height:96svh;overflow:auto}
+.cg{--w:min(1100px,96vw,calc((100svh - 6rem)*1.5));width:var(--w);aspect-ratio:3/2;container-type:inline-size;display:grid;grid-template-columns:1fr 1fr;background:var(--paper);border:3px solid var(--ink);box-shadow:10px 10px 0 var(--red);position:relative;animation:cc-in .6s cubic-bezier(.2,1.2,.3,1) both}
+@keyframes cc-in{from{opacity:0;transform:translateY(26px) rotate(-2deg) scale(.95)}to{opacity:1;transform:none}}
+.cg::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:24px;transform:translateX(-50%);background:linear-gradient(90deg,#0004,transparent 40%,transparent 60%,#0004);pointer-events:none}
+.cg-page{position:relative;min-height:0;min-width:0;display:flex;flex-direction:column;gap:1em;padding:1.5em;font-size:1.32cqw;line-height:1.35;background-image:radial-gradient(#0002 1px,transparent 1.4px);background-size:8px 8px;overflow:hidden}
+.cg-right{padding:0;gap:0}
+/* left page */
+.cg-tab{align-self:flex-start;background:var(--ink);color:var(--paper);font:.85em var(--m);letter-spacing:.1em;padding:.55em 2.4em .55em .9em;clip-path:polygon(0 0,calc(100% - 1.3em) 0,100% 55%,100% 100%,0 100%)}
+.cg-tab span{color:var(--red);margin-right:.4em}
+.cg-top{display:grid;grid-template-columns:1.55fr 1fr;gap:1em;align-items:stretch}
+.cg-bio{margin:0;font-size:.95em;line-height:1.45;border-left:3px solid var(--red);padding-left:.7em}
+.cg-kanji{background:var(--ink);color:var(--paper);display:grid;place-items:center;align-content:center;gap:.2em;padding:.5em;min-height:6.5em}
+.cg-kanji b{font:400 4.2em/1 var(--d);font-weight:400}
+.cg-kanji span{font:.8em var(--m);letter-spacing:.3em}
+.cg-mid{flex:1;min-height:0;display:grid;grid-template-columns:1.15fr 1fr;gap:1em;align-items:center}
+.cg-radar svg{display:block;width:100%;height:auto}
+.cg-radar p{margin:.3em 0 0;font:.62em var(--m);text-align:center;opacity:.7}
+.cg-notes{list-style:none;margin:0;padding:0;display:grid;gap:.55em}
+.cg-notes li{display:grid;grid-template-columns:1.5em 1fr;gap:.5em;align-items:start;border:2px solid var(--ink);background:var(--paper);padding:.35em .5em;box-shadow:3px 3px 0 var(--ink)}
+.cg-notes b{font:400 1.4em/1 var(--d);color:var(--red)}
+.cg-notes span{font-size:.78em;line-height:1.3}
+.cg-notes em{display:block;font:normal .8em var(--m);letter-spacing:.06em;color:var(--red)}
+/* right page */
+.cg-portrait{position:relative;flex:1.15 1 0;min-height:0;background:var(--char);overflow:hidden;border-bottom:3px solid var(--ink)}
+.cg-portrait::before{content:"";position:absolute;right:-8%;top:6%;width:52%;aspect-ratio:1;border-radius:50%;background:var(--red);opacity:.9}
+.cg-fill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;user-select:none}
+.cg-shade{position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,#000a)}
+.cg-banner{position:absolute;left:0;bottom:0;right:0;padding:.35em 1em;background:var(--ink);color:var(--paper);font:400 1.9em/1.1 var(--d);letter-spacing:.14em;-webkit-text-stroke:1px var(--paper);color:transparent;border-top:3px solid var(--paper)}
+.cg-lower{flex:1 1 0;min-height:0;display:grid;grid-template-columns:1.35fr 1fr;gap:1em;padding:1.1em 1.3em}
+.cg-profile{border:2px solid var(--ink);padding:.6em .8em;background:var(--paper);min-width:0}
+.cg-profile h2{font-size:1.4em;line-height:1;text-shadow:2px 2px 0 #b51f2b55}
+.cg-profile p{margin:.35em 0;font:.8em var(--m);font-weight:700}
+.cg-profile dl{margin:0;display:grid;gap:.12em}
+.cg-profile dl div{display:grid;grid-template-columns:auto 1fr;gap:.3em;font-size:.78em;line-height:1.25;border-bottom:1px solid #0003;padding-bottom:.1em}
+.cg-profile dt{font:.9em var(--m);color:var(--red);white-space:nowrap}.cg-profile dt::after{content:"／";color:var(--ink)}
+.cg-profile dd{margin:0;min-width:0}
+.cg-tag{display:flex;flex-direction:column;justify-content:space-between;gap:.6em;background:var(--ink);color:var(--paper);border:3px solid var(--ink);padding:.8em;box-shadow:4px 4px 0 var(--red)}
+.cg-tag b{font:400 1.75em/1.05 var(--d);font-weight:400;text-shadow:2px 2px 0 var(--red)}
+.cg-tag span{font:.7em var(--m);letter-spacing:.14em;opacity:.8}
+.cg-actions{justify-content:center}
+.cg-actions .btn{color:var(--paper)}
+/* phones: pages stack and the dialog scrolls */
+@media(max-width:760px){
+  .cg{--w:96vw;aspect-ratio:auto;grid-template-columns:1fr}
+  .cg::after{display:none}
+  .cg-page{font-size:3.6cqw;overflow:visible}
+  .cg-portrait{flex:none;height:78cqw}
+  .cg-lower{flex:none;grid-template-columns:1fr;padding:1em}
+  .cg-mid{grid-template-columns:1fr}
+}
